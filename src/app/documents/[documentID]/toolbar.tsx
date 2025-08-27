@@ -4,6 +4,10 @@ import { cn } from "@/lib/utils";
 import { Level } from "@tiptap/extension-heading";
 import { useEditorStore } from "@/store/use-editor-store";
 import {
+    AlignCenterIcon,
+    AlignJustifyIcon,
+    AlignLeftIcon,
+    AlignRightIcon,
     BoldIcon,
     ChevronDownIcon,
     Highlighter,
@@ -28,6 +32,56 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "
 import { ColorResult, SketchPicker } from "react-color";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+function AlignButton() {
+    const { editor } = useEditorStore();
+
+    const alignments = [
+        { label: "Align Left", value: "left", icon: AlignLeftIcon },
+        { label: "Align Center", value: "center", icon: AlignCenterIcon },
+        { label: "Align Right", value: "right", icon: AlignRightIcon },
+        { label: "Align Justify", value: "justify", icon: AlignJustifyIcon }
+    ]
+
+    const getCurrentAlignment = () => {
+        if (editor?.isActive({ textAlign: "left" })) return AlignLeftIcon;
+        if (editor?.isActive({ textAlign: "center" })) return AlignCenterIcon;
+        if (editor?.isActive({ textAlign: "right" })) return AlignRightIcon;
+        if (editor?.isActive({ textAlign: "justify" })) return AlignJustifyIcon;
+        return AlignLeftIcon; // default
+    };
+
+    const CurrentAlignIcon = getCurrentAlignment();
+
+    return (
+        <>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
+                        <CurrentAlignIcon className="size-4" />
+                    </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="p-1 flex flex-col gap-y-1">
+                    {alignments.map(({ label, value, icon: Icon }) => (
+                        // <DropdownMenuItem key={value}>
+                        <button
+                            key={value}
+                            onClick={() => editor?.chain().focus().setTextAlign(value).run()}
+                            className={cn(
+                                "flex items-center gap-x-2 py-1 px-2 rounded-sm hover:bg-neutral-200/80",
+                                editor?.isActive({ textAlign: value }) && "bg-neutral-200/80"
+                            )}
+                        >
+                            <Icon className="size-4" />
+                            <span className="text-sm">{label}</span>
+                        </button>
+                        // <DropdownMenuItem>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </>
+    )
+}
 
 function ImageButton() {
     const { editor } = useEditorStore();
@@ -447,7 +501,7 @@ export default function Toolbar() {
                 <ImageButton />
 
                 <Separator orientation="vertical" className="h-4 mx-1" />
-                {/* TODO: Align */}
+                <AlignButton />
 
                 <Separator orientation="vertical" className="h-4 mx-1" />
                 {/* TODO: Line Height */}
