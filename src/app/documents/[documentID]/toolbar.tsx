@@ -7,6 +7,7 @@ import {
     BoldIcon,
     ChevronDownIcon,
     Highlighter,
+    ImageIcon,
     ItalicIcon,
     Link2,
     ListTodoIcon,
@@ -15,12 +16,15 @@ import {
     PrinterIcon,
     Redo2Icon,
     RemoveFormattingIcon,
+    SearchIcon,
     SpellCheckIcon,
     Underline,
-    Undo2Icon
+    Undo2Icon,
+    UploadIcon
 } from "lucide-react";
 import { ReactElement, useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { ColorResult, SketchPicker } from "react-color";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -31,37 +35,77 @@ function ImageButton() {
     const [imageUrl, setImageUrl] = useState(editor?.getAttributes("image").src || "");
 
     const onChange = (src: string) => {
-        editor?.chain().focus().extendMarkRange("image").setImage({ src }).run();
+        editor?.chain().focus().setImage({ src }).run();
         setImageUrl("")
+    }
+
+    const onUpload = () => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.onchange = (event) => {
+            const file = (event.target as HTMLInputElement).files?.[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const src = (e.target as FileReader).result as string;
+                    onChange(src);
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        input.click();
+    }
+
+    const handleImageUrlSubmit = () => {
+        if (imageUrl) {
+            onChange(imageUrl);
+            setImageUrl("");
+            setIsDialogOpen(false);
+        }
     }
 
     return (
         <>
-            <DropdownMenu onOpenChange={(open) => {
-                if (open) {
-                    setValue(editor?.getAttributes("link").href || "");
-                }
-            }}>
+            <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <button className="h-7 min-w-7 shrink-0 flex flex-col items-center justify-center rounded-sm hover:bg-neutral-200/80 px-1.5 overflow-hidden text-sm">
-                        <Link2 className="size-4" />
+                        <ImageIcon className="size-4" />
                     </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="p-2.5 flex items-center gap-x-2">
+                <DropdownMenuContent>
+                    <DropdownMenuItem onClick={onUpload}>
+                        <UploadIcon className="size-4 mr-2" />
+                        Upload
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => setIsDialogOpen(true)}>
+                        <SearchIcon className="size-4 mr-2" />
+                        Paste Image Url
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Paste Image URL</DialogTitle>
+                    </DialogHeader>
                     <Input
-                        placeholder="https://example.com"
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
+                        placeholder="https://example.com/image.png"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 e.preventDefault();
-                                onChange(value);
+                                handleImageUrlSubmit();
                             }
                         }}
                     />
-                    <Button onClick={() => onChange(value)}>Apply</Button>
-                </DropdownMenuContent>
-            </DropdownMenu>
+                    <DialogFooter>
+                        <Button onClick={handleImageUrlSubmit}>Submit</Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </>
     )
 
@@ -400,7 +444,7 @@ export default function Toolbar() {
                 <LinkButton />
 
                 <Separator orientation="vertical" className="h-4 mx-1" />
-                {/* TODO: Image */}
+                <ImageButton />
 
                 <Separator orientation="vertical" className="h-4 mx-1" />
                 {/* TODO: Align */}
