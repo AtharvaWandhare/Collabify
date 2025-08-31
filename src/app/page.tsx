@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
+import RedirectButton from "@/components/utility/redirect-button";
 
 export default function Home() {
+
   return (
     <>
       <div className="flex min-h-screen items-center justify-center">
-        <Button variant={"destructive"}>Click Me</Button>
+        <RedirectButton href="/documents/new">
+          Create New Document
+        </RedirectButton>
       </div>
     </>
   );
