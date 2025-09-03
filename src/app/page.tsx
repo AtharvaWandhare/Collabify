@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import RedirectButton from "@/components/utility/redirect-button";
 
 export default function Home() {
