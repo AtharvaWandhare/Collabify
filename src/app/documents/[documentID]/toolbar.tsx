@@ -650,7 +650,7 @@ export default function Toolbar() {
 
     return (
         <>
-            <div className="bg-[#F1F4F9] px-2.5 py-0.5 rounded-[24px] min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto">
+            <div className="bg-[#F1F4F9] px-2.5 py-0.5 rounded-[24px] min-h-[40px] flex items-center gap-x-0.5 overflow-x-auto print:hidden">
                 {sections[0].map((item) => <ToolBarButton key={item.label} {...item} />)}
                 <Separator orientation="vertical" className="mx-1 min-h-5 bg-neutral-500" />
 
