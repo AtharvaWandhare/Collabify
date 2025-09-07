@@ -10,12 +10,13 @@ import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image"
-import FontFamily, { TextStyle } from '@tiptap/extension-text-style';
-import Color from '@tiptap/extension-text-style';
+import TextStyle from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
 import Heading from '@tiptap/extension-heading';
 import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align'
+import FontFamily from '@tiptap/extension-font-family'
 
 import { useEditorStore } from "@/store/use-editor-store";
 import { FontSizeExtension } from '@/extensions/font-size';
@@ -23,6 +24,7 @@ import { LineHeightExtension } from '@/extensions/line-height';
 import { Ruler } from './Ruler';
 
 import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
+import { Threads } from './threads';
 
 export default function Editor() {
     const liveblocks = useLiveblocksExtension();
@@ -59,7 +61,9 @@ export default function Editor() {
             }
         },
         extensions: [
-            StarterKit,
+            StarterKit.configure({
+                history: false,
+            }),
             Underline,
             TaskList,
             TaskItem.configure({
@@ -89,7 +93,6 @@ export default function Editor() {
             liveblocks,
         ],
         content: ``,
-        // Don't render immediately on the server to avoid SSR issues
         immediatelyRender: false,
     });
 
@@ -99,6 +102,7 @@ export default function Editor() {
                 <Ruler />
                 <div className='min-w-max flex justify-center w-[816px] py-y print:py-0 mx-auto print:w-full print:min-w-0'>
                     <EditorContent editor={editor} />
+                    <Threads editor={editor} />
                 </div>
             </div>
         </>
