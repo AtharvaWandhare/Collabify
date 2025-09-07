@@ -1,13 +1,17 @@
 'use client';
-import { ReactElement } from 'react';
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-import { TaskItem, TaskList } from "@tiptap/extension-list";
-import { TableKit } from "@tiptap/extension-table";
+import TaskItem from '@tiptap/extension-task-item'
+import TaskList from '@tiptap/extension-task-list'
+import Table from '@tiptap/extension-table';
+import TableRow from '@tiptap/extension-table-row';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
 import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image"
-import { FontFamily, TextStyle, Color } from '@tiptap/extension-text-style';
+import FontFamily, { TextStyle } from '@tiptap/extension-text-style';
+import Color from '@tiptap/extension-text-style';
 import Heading from '@tiptap/extension-heading';
 import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
@@ -18,7 +22,10 @@ import { FontSizeExtension } from '@/extensions/font-size';
 import { LineHeightExtension } from '@/extensions/line-height';
 import { Ruler } from './Ruler';
 
-export default function Editor(): ReactElement {
+import { useLiveblocksExtension } from "@liveblocks/react-tiptap";
+
+export default function Editor() {
+    const liveblocks = useLiveblocksExtension();
     const { setEditor } = useEditorStore();
     const editor = useEditor({
         onCreate({ editor }) {
@@ -58,7 +65,10 @@ export default function Editor(): ReactElement {
             TaskItem.configure({
                 nested: true,
             }),
-            TableKit,
+            Table,
+            TableRow,
+            TableHeader,
+            TableCell,
             Image,
             ImageResize,
             FontFamily,
@@ -75,29 +85,10 @@ export default function Editor(): ReactElement {
                 types: ["heading", "paragraph"],
             }),
             FontSizeExtension,
-            LineHeightExtension
+            LineHeightExtension,
+            liveblocks,
         ],
-        content: `
-            <p>Hello World! 🌎️</p>
-            <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th colspan="3">Description</th>
-            </tr>
-            <tr>
-              <td>Cyndi Lauper</td>
-              <td>Singer</td>
-              <td>Songwriter</td>
-              <td>Actress</td>
-            </tr>
-          </tbody>
-        </table>
-        <ul data-type="taskList">
-          <li data-type="taskItem" data-checked="true">A list item</li>
-          <li data-type="taskItem" data-checked="false">And another one</li>
-        </ul>
-        `,
+        content: ``,
         // Don't render immediately on the server to avoid SSR issues
         immediatelyRender: false,
     });

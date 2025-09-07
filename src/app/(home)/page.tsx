@@ -1,8 +1,16 @@
-import RedirectButton from "@/components/utility/redirect-button";
+"use client";
+import { usePaginatedQuery } from "convex/react";
+
 import { Navbar } from "./navbar";
 import { TemplatesGallery } from "./template-gallery";
 
+import { api } from "../../../convex/_generated/api";
+import { DocumentsTable } from "./documents-table";
+import { useSearchParam } from "@/hooks/use-search-param";
+
 export default function Home() {
+  const [search] = useSearchParam();
+  const { results, status, loadMore } = usePaginatedQuery(api.documents.get, { search }, { initialNumItems: 5 });
 
   return (
     <>
@@ -13,6 +21,11 @@ export default function Home() {
 
         <div className="mt-16">
           <TemplatesGallery />
+          <DocumentsTable
+            documents={results}
+            loadMore={loadMore}
+            status={status}
+          />
         </div>
       </div>
     </>
