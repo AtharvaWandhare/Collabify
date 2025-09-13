@@ -102,8 +102,9 @@ export default function Editor({ initialContent }: EditorProps) {
             }),
             FontSizeExtension,
             LineHeightExtension,
-            liveblocks,
+            liveblocks
         ],
+        autofocus: true,
         content: ``,
         immediatelyRender: false,
     });
