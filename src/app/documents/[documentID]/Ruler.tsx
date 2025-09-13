@@ -1,12 +1,19 @@
 import { JSX, useRef, useState } from 'react';
 import { FaCaretDown } from 'react-icons/fa'
+import { useStorage, useMutation } from '@liveblocks/react';
+import { LEFT_MARGIN_DEFAULT, RIGHT_MARGIN_DEFAULT } from '@/constants/margins';
 
 const markers = Array.from({ length: 83 }, (_, i) => i)
 
 export const Ruler = () => {
-
-    const [leftMargin, setLeftMargin] = useState(56);
-    const [rightMargin, setRightMargin] = useState(56);
+    const leftMargin = useStorage((root) => root.leftMargin) ?? LEFT_MARGIN_DEFAULT;
+    const setLeftMargin = useMutation(({ storage }, position: number) => {
+        storage.set("leftMargin", position);
+    }, [])
+    const rightMargin = useStorage((root) => root.rightMargin) ?? RIGHT_MARGIN_DEFAULT;
+    const setRightMargin = useMutation(({ storage }, position: number) => {
+        storage.set("rightMargin", position);
+    }, [])
 
     const [isDraggingLeft, setIsDraggingLeft] = useState(false);
     const [isDraggingRight, setIsDraggingRight] = useState(false);
@@ -52,25 +59,28 @@ export const Ruler = () => {
     }
 
     const handleLeftDoubleClick = () => {
-        setLeftMargin(56);
+        setLeftMargin(LEFT_MARGIN_DEFAULT);
     }
 
     const handleRightDoubleClick = () => {
-        setRightMargin(56);
+        setRightMargin(RIGHT_MARGIN_DEFAULT);
     }
 
     return (
         <>
-            <div className='flex items-center gap-2 justify-between px-4 absolute top-30 right-10 border-2 shadow-md bg-transparent z-50'>
-                <div className='flex items-center'>
-                    <span className='text-sm text-gray-500'>Left Margin:</span>
-                    <span className='ml-2 text-sm font-medium'>{leftMargin}px</span>
+            {isDraggingLeft || isDraggingRight ? (
+
+                <div className='flex items-center gap-2 justify-between px-4 absolute top-60 right-10 border-2 shadow-md bg-transparent z-50'>
+                    <div className='flex items-center'>
+                        <span className='text-sm text-gray-500'>Left Margin:</span>
+                        <span className='ml-2 text-sm font-medium'>{leftMargin}px</span>
+                    </div>
+                    <div className='flex items-center'>
+                        <span className='text-sm text-gray-500'>Right Margin:</span>
+                        <span className='ml-2 text-sm font-medium'>{rightMargin}px</span>
+                    </div>
                 </div>
-                <div className='flex items-center'>
-                    <span className='text-sm text-gray-500'>Right Margin:</span>
-                    <span className='ml-2 text-sm font-medium'>{rightMargin}px</span>
-                </div>
-            </div>
+            ) : null}
             <div
                 ref={rulerRef}
                 onMouseMove={handleMouseMove}

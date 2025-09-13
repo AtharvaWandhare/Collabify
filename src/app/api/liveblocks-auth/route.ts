@@ -34,10 +34,15 @@ export async function POST(req: Request) {
         return new Response("Unauthorized! You do not have permission to access this document.", { status: 401 });
     }
 
+    const name = user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous";
+    const nameToNumber = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const color = `hsl(${nameToNumber % 360}, 100%, 75%)`;
+
     const session = liveblocks.prepareSession(user.id, {
         userInfo: {
-            name: user.fullName ?? "Anonymous",
-            avatar: user.imageUrl
+            name: user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous",
+            avatar: user.imageUrl,
+            color
         }
     });
 

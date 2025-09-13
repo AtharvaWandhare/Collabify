@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface RenameDialogProps {
     documentId: Id<"documents">;
@@ -33,7 +34,6 @@ export const RenameDialog = ({ documentId, initialTitle, children }: RenameDialo
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsUpdating(true);
-
         update({ id: documentId, title: title.trim() || "Untitled" })
             .then(() => {
                 toast.success("Document renamed successfully");
