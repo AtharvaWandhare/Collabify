@@ -574,8 +574,6 @@ function ToolBarButton({ onClick, isActive, icon: Icon }: ToolBarButtonProps): R
 export default function Toolbar() {
 
     const { editor } = useEditorStore()
-    console.log("ToolBar Editor: ", { editor });
-
     const sections: {
         label: string; icon: LucideIcon;
         onClick: () => void;

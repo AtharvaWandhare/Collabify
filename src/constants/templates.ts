@@ -9,7 +9,7 @@ export const templates = [
         id: "business-letter",
         label: "Business Letter",
         imageUrl: "/template_gallery/business-letter.svg",
-                initialContent: `
+        initialContent: `
                 <h1>Business Letter</h1>
                 <p><strong>From</strong><br>
                 [Your Name]<br>
@@ -55,7 +55,7 @@ export const templates = [
         id: "cover-letter",
         label: "Cover Letter",
         imageUrl: "/template_gallery/cover-letter.svg",
-                initialContent: `
+        initialContent: `
                 <h1>Cover Letter</h1>
                 <p><strong>[Your Name]</strong><br>
                 [City, State] • [Phone] • [Email] • [Portfolio/LinkedIn]</p>
@@ -98,7 +98,7 @@ export const templates = [
         id: "letter",
         label: "Letter",
         imageUrl: "/template_gallery/letter.svg",
-                initialContent: `
+        initialContent: `
                 <h1>Letter</h1>
                 <p><strong>Date:</strong> [Month Day, Year]</p>
 
@@ -130,7 +130,7 @@ export const templates = [
         id: "project-proposal",
         label: "Project Proposal",
         imageUrl: "/template_gallery/project-proposal.svg",
-                initialContent: `
+        initialContent: `
                 <h1>Project Proposal</h1>
                 <p><strong>Project:</strong> [Project Name]</p>
                 <p><strong>Prepared by:</strong> [Your Name / Team]</p>
@@ -186,7 +186,7 @@ export const templates = [
         id: "resume",
         label: "Resume",
         imageUrl: "/template_gallery/resume.svg",
-                initialContent: `
+        initialContent: `
                 <h1>[Your Name]</h1>
                 <p>[City, State] • [Phone] • [Email] • [LinkedIn/Portfolio]</p>
                 <hr>
@@ -223,11 +223,11 @@ export const templates = [
                 <p><strong>[Project Name]</strong> — Short description and notable results. <a href="[Link]">Link</a></p>
                 `
     },
-        {
-                id: "software-proposal",
-                label: "Software Proposal",
-                imageUrl: "/template_gallery/software-proposal.svg",
-                initialContent: `
+    {
+        id: "software-proposal",
+        label: "Software Proposal",
+        imageUrl: "/template_gallery/software-proposal.svg",
+        initialContent: `
                 <h1>Software Proposal</h1>
                 <p><strong>Client:</strong> [Client Name]</p>
                 <p><strong>Prepared by:</strong> [Your Company]</p>
@@ -280,5 +280,5 @@ export const templates = [
                     Approved by: ____________________ • Title: __________ • Date: __________
                 </p>
                 `
-        },
+    },
 ];

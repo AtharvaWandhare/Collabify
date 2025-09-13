@@ -12,7 +12,6 @@ import Image from "@tiptap/extension-image";
 import ImageResize from "tiptap-extension-resize-image"
 import TextStyle from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
-import Heading from '@tiptap/extension-heading';
 import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align'
@@ -76,6 +75,7 @@ export default function Editor({ initialContent }: EditorProps) {
         extensions: [
             StarterKit.configure({
                 history: false,
+                heading: { levels: [1, 2, 3, 4, 5, 6] }
             }),
             Underline,
             TaskList,
@@ -90,7 +90,6 @@ export default function Editor({ initialContent }: EditorProps) {
             ImageResize,
             FontFamily,
             TextStyle,
-            Heading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
             Color,
             Highlight.configure({ multicolor: true }),
             Link.configure({

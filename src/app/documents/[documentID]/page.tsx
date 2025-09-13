@@ -1,4 +1,3 @@
-import { BsWrenchAdjustable } from "react-icons/bs";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Document } from "./document";
@@ -11,8 +10,6 @@ interface DocumentIdPageProps {
 
 export default async function DocumentIdPage({ params }: DocumentIdPageProps) {
     const { documentID } = await params;
-
-    console.log("DocumentIdPage received documentID:", documentID);
 
     const { getToken } = await auth();
     const token = await getToken({ template: "convex" }) ?? undefined;
