@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 import { AlertTriangleIcon } from "lucide-react";
 import Link from "next/link";
 
-export default function Error({
-    error,
-    reset
-}: {
+interface ErrorProps {
     error: Error & { digest?: string };
     reset: () => void;
-}) {
+}
+
+export default function Error({ error, reset }: ErrorProps) {
+    // console.log("Error occurred:", error.message.split("Error:")[1].split("\n")[0]);
     return (
         <>
             <div className="min-h-screen flex flex-col items-center justify-center space-y-6">
@@ -22,7 +22,7 @@ export default function Error({
                     </div>
                     <div className="space-y-2">
                         <h2 className="text-xl font-semibold text-gray-900">Something went wrong</h2>
-                        <p>{error.message}</p>
+                        <p>{error.message?.split("Error:")[1].split("\n")[0] ?? "Unknown error"}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-x-3">

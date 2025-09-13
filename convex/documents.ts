@@ -15,8 +15,6 @@ export const getByIds = query({
                 documents.push({ id, name: "[Removed]" });
             }
         }
-        console.log("Get by Ids called with ids:", ids, "Returning documents:", documents);
-        console.log("Resulting documents:", documents);
         return documents;
     },
 });
@@ -29,7 +27,7 @@ export const create = mutation({
     handler: async (ctx, args) => {
         const user = await ctx.auth.getUserIdentity();
         if (!user) {
-            throw new ConvexError("Unauthorized");
+            throw new ConvexError("Unauthorized Action Performed! Cannot create document. Please login.");
         }
 
         const organizationId = (user.organization_id ?? undefined) as | string | undefined;
@@ -47,7 +45,7 @@ export const get = query({
     handler: async (ctx, { search, paginationOpts }) => {
         const user = await ctx.auth.getUserIdentity();
         if (!user) {
-            throw new ConvexError("Unauthorized");
+            throw new ConvexError("Unauthorized Access! Cannot fetch documents. Please login.");
         }
 
         const organizationId = (user.organization_id ?? undefined) as | string | undefined;
@@ -82,7 +80,7 @@ export const removeById = mutation({
     handler: async (ctx, args) => {
         const user = await ctx.auth.getUserIdentity();
         if (!user) {
-            throw new ConvexError("Unauthorized");
+            throw new ConvexError("Unauthorized Action Performed! Cannot delete document. Please login.");
         }
 
         const organizationId = (user.organization_id ?? undefined) as | string | undefined;
@@ -107,20 +105,20 @@ export const updateById = mutation({
     handler: async (ctx, args) => {
         const user = await ctx.auth.getUserIdentity();
         if (!user) {
-            throw new ConvexError("Unauthorized");
+            throw new ConvexError("Unauthorized Action Performed! Cannot update document. Please login.");
         }
 
         const organizationId = (user.organization_id ?? undefined) as | string | undefined;
 
         const document = await ctx.db.get(args.id);
         if (!document) {
-            throw new ConvexError("Document not found");
+            throw new ConvexError("Cannot Update Document! Document not found.");
         }
 
         const isOwner = document.ownerId === user.subject;
         const isOrganizationMember = !!(document.organizationId && document.organizationId === organizationId);
         if (!isOwner && !isOrganizationMember) {
-            throw new ConvexError("Forbidden");
+            throw new ConvexError("Forbidden Action! You don't have permission to update this document.");
         }
 
         return await ctx.db.patch(args.id, { title: args.title });
@@ -132,7 +130,7 @@ export const getById = query({
     handler: async (ctx, { id }) => {
         const document = await ctx.db.get(id);
         if (!document) {
-            throw new ConvexError("Document not found");
+            throw new ConvexError("Cannot Get Document! Document does not exist.");
         }
         return document;
     }
