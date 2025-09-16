@@ -22,7 +22,7 @@ export default function Error({ error, reset }: ErrorProps) {
                     </div>
                     <div className="space-y-2">
                         <h2 className="text-xl font-semibold text-gray-900">Something went wrong</h2>
-                        <p>{error.message?.split("Error:")[1].split("\n")[0] ?? "Unknown error"}</p>
+                        <p>{error.message}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-x-3">
