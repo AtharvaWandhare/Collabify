@@ -10,7 +10,7 @@ import { templates } from "@/constants/templates";
 import { cn } from "@/lib/utils";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import { useState } from "react";
 import { toast } from "sonner";
 

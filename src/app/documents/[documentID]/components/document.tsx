@@ -1,6 +1,6 @@
 "use client";
 import Editor from "@/app/documents/[documentID]/editor";
-import Toolbar from "@/app/documents/[documentID]/toolbar";
+import Toolbar from "@/app/documents/[documentID]/components/toolbar";
 import { Navbar } from "@/app/documents/[documentID]/navbar";
 import { Room } from "./Room";
 import { Preloaded, usePreloadedQuery } from "convex/react";
